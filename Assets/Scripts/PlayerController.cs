@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
+    // In this script, the game is shaped according to the movement of the player.
     private Vector3 moveDirection = Vector3.zero;
     public float moveSpeed;
     private float moveStartSpeed;
@@ -18,37 +19,9 @@ public class PlayerController : MonoBehaviour
         playerStartPosition = new Vector3(groundController.StartGroundPos.x + startGroundObj.StartGroundObjScale.x / 2, groundController.StartGroundPos.y, groundController.StartGroundPos.z - startGroundObj.StartGroundObjScale.z / 2);
         transform.position = playerStartPosition;
     }
-    private void ChangePlayerDirection()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (moveDirection == Vector3.zero || moveDirection == Vector3.left)
-            {
-                moveDirection = Vector3.forward;
-            }
-            else
-            {
-                moveDirection = Vector3.left;
-            }
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.transform.parent.CompareTag("StartGround"))
-        {
-            other.transform.parent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        }
-        if (other.transform.parent.CompareTag("MiniGround"))
-        {
-            StartCoroutine(CallGroundFall(other.transform.parent.gameObject));
-        }
-    }
-    IEnumerator CallGroundFall(GameObject obj)
-    {
-        yield return new WaitForSeconds(1f);
-        obj.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        groundController.SpawnNewMiniGround?.Invoke();
-    }
+    
+    
+   
     void Update()
     {
         switch (GameManager.instance.CurrentGameState)
@@ -75,12 +48,47 @@ public class PlayerController : MonoBehaviour
         }
         transform.Translate(moveDirection*Time.deltaTime*moveSpeed);
     }
+
+    // The direction changes every time the player clicks the mouse.
+    private void ChangePlayerDirection()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (moveDirection == Vector3.zero || moveDirection == Vector3.left)
+            {
+                moveDirection = Vector3.forward;
+            }
+            else
+            {
+                moveDirection = Vector3.left;
+            }
+        }
+    }
+    // When the player stops touching the floor, the floor begins to fall to the ground.
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.parent.CompareTag("StartGround"))
+        {
+            other.transform.parent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        }
+        if (other.transform.parent.CompareTag("MiniGround"))
+        {
+            StartCoroutine(CallGroundFall(other.transform.parent.gameObject));
+        }
+    }
+     IEnumerator CallGroundFall(GameObject obj)
+    {
+        yield return new WaitForSeconds(1f);
+        obj.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        groundController.SpawnNewMiniGround?.Invoke();
+    }
     IEnumerator IncreaseSpeed()
     {
         yield return new WaitForSeconds(5f);
         moveSpeed += 0.05f;
         StartCoroutine("IncreaseSpeed");
     }
+
     private void PrepareGame()
     {
         moveSpeed = moveStartSpeed;

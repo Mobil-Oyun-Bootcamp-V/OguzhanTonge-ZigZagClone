@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
+    // This script allows the camera to follow the player.
     [SerializeField] private Transform playerPos;
     private Vector3 targetPos;
     private float playerXPos, playerZPos, middleOfThePos;
@@ -25,6 +26,7 @@ public class CameraMovement : MonoBehaviour
                 break;
         }
     }
+    // Lerp is used for smooth tracking
     private void CameraMove()
     {
         transform.position = Vector3.Lerp(transform.position, CalculateTargetPos(), Time.deltaTime);

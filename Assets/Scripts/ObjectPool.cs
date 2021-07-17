@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 public class ObjectPool : MonoBehaviour
 {
+    //Object pool was used for the creation of the walls
     [Serializable]
     public struct Pool
     {

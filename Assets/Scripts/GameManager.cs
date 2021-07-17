@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private GameObject textShowPrefab;
     [SerializeField]
     private GameObject objectPool;
+
+    // We divided the game into states
     public enum GameState
     {
         Prepare,
@@ -74,6 +76,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    // Game prepared according to the states with using PrepareGame, GamePlay and GameOver functions.
     void PrepareGame()
     {
         currentScore = 0;
