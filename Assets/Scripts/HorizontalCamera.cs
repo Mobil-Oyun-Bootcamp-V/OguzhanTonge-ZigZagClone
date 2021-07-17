@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// I wrote this to keep the horizontal view stable for every screen resolution
 [ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
 public class HorizontalCamera : MonoBehaviour
